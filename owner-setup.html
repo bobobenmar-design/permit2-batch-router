@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Owner Setup - Permit2 Batch Router</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+    .section {
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 10px 0;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #qr-code {
+      margin: 20px 0;
+      text-align: center;
+    }
+    .link-box {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 4px;
+      margin: 10px 0;
+      word-break: break-all;
+      font-family: monospace;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Owner Setup</h1>
+  <p>Generate a shareable link or QR code for your users.</p>
+
+  <div class="section">
+    <h2>Owner Configuration</h2>
+    <label>Owner Wallet Address:</label>
+    <input id="owner-address" type="text" placeholder="0x..." value="0xb4B2Cb95DcCA62e9E4dD10Dbaa17e8693607E5c9" />
+
+    <label>Frontend URL (where users will connect):</label>
+    <input id="frontend-url" type="text" placeholder="https://..." value="http://localhost:4174" />
+
+    <button onclick="generateLink()">Generate Shareable Link</button>
+  </div>
+
+  <div class="section">
+    <h2>Shareable Link</h2>
+    <div class="link-box" id="share-link">Click "Generate Shareable Link" to create a link for your users</div>
+    <button onclick="copyLink()">Copy Link</button>
+    <button onclick="generateQR()">Generate QR Code</button>
+  </div>
+
+  <div class="section">
+    <h2>QR Code</h2>
+    <div id="qr-code"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    let currentLink = '';
+
+    function generateLink() {
+      const ownerAddress = document.getElementById('owner-address').value;
+      const frontendUrl = document.getElementById('frontend-url').value;
+
+      if (!ownerAddress || !frontendUrl) {
+        alert('Fill in all fields');
+        return;
+      }
+
+      currentLink = `${frontendUrl}?owner=${ownerAddress}`;
+      document.getElementById('share-link').textContent = currentLink;
+    }
+
+    function copyLink() {
+      if (!currentLink) {
+        alert('Generate a link first');
+        return;
+      }
+      navigator.clipboard.writeText(currentLink);
+      alert('Link copied to clipboard!');
+    }
+
+    function generateQR() {
+      if (!currentLink) {
+        alert('Generate a link first');
+        return;
+      }
+
+      const qrDiv = document.getElementById('qr-code');
+      qrDiv.innerHTML = ''; // Clear previous QR code
+
+      new QRCode(qrDiv, {
+        text: currentLink,
+        width: 300,
+        height: 300,
+      });
+    }
+  </script>
+</body>
+</html>
