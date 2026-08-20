@@ -1,0 +1,8 @@
+[build]
+  command = "npm install --prefix frontend/trust-wallet-companion && npm --prefix frontend/trust-wallet-companion run build"
+  publish = "frontend/trust-wallet-companion/.output/public"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

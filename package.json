@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
-    "dev:client": "vite --config vite.config.ts --host 0.0.0.0 --port 4174 --strictPort",
+    "dev:client": "npm --prefix frontend/trust-wallet-companion run dev -- --host 0.0.0.0 --port 4174",
     "dev:server": "node -e \"process.env.PORT='3003'; import('./server/index.js')\"",
-    "build": "vite build --config vite.config.ts",
+    "build": "npm --prefix frontend/trust-wallet-companion run build",
     "scan": "tsx script/ScanAndSign.ts",
     "deploy:sepolia": "forge script script/Deploy.s.sol:DeployBatchTokenTransferRouter --rpc-url sepolia --broadcast"
   },
